@@ -1,0 +1,12 @@
+.DS_Store
+*.swp
+tags
+.idea/
+.nova
+.ignore
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
