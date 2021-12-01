@@ -10,3 +10,6 @@ tags
 *.njsproj
 *.sln
 *.sw?
+
+**/protoc
+var

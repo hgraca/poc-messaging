@@ -38,3 +38,22 @@ help:  ## Show this help
 	@grep '^[^#[:space:]].*:' Makefile | grep -v '^default' | grep -v '^\.' | grep -v '=' | grep -v '^_' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-40s\033[0m %s\n", $$1, $$2}' | sed 's/://'
 
 ########################################################################################################################
+
+setup: ## Prepare all projects to be run
+	echo ""
+	echo "==============================================="
+	echo "===== Preparing all projects to be run"
+	echo "==============================================="
+	$(MAKE) .download-protobuf-compiler
+
+.download-protobuf-compiler: ## Download Protobuf compiler
+	echo ""
+	echo "==============================================="
+	echo "===== Downloading and installing the compiler, project wide only"
+	echo "==============================================="
+	mkdir -p ./var/
+	curl -L https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip -o ./var/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+	unzip ./var/protoc-${PROTOC_VERSION}-linux-x86_64.zip -d ./var/protoc-${PROTOC_VERSION}-linux-x86_64
+	mkdir -p ./bin/
+	mv ./var/protoc-${PROTOC_VERSION}-linux-x86_64/bin/protoc ./bin
+	rm -rf ./var/protoc-${PROTOC_VERSION}-linux-x86_64
