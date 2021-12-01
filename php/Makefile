@@ -42,19 +42,23 @@ help:  ## Show this help
 setup: ## Prepare all projects to be run
 	echo ""
 	echo "==============================================="
-	echo "===== Preparing all projects to be run"
+	echo "===== Preparing the PHP project to be run"
 	echo "==============================================="
-	$(MAKE) .download-protobuf-compiler
-	$(MAKE) -C ./php setup
+	$(MAKE) .setup-composer
+	$(MAKE) .install-dependencies
 
-.download-protobuf-compiler: ## Download Protobuf compiler
+.setup-composer: ## Setting up Composer, PHP's package manager
 	echo ""
 	echo "==============================================="
-	echo "===== Downloading and installing the compiler, project wide only"
+	echo "===== Setting up composer, PHP's package manager"
 	echo "==============================================="
 	mkdir -p ./var/
-	curl -L https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip -o ./var/protoc-${PROTOC_VERSION}-linux-x86_64.zip
-	unzip ./var/protoc-${PROTOC_VERSION}-linux-x86_64.zip -d ./var/protoc-${PROTOC_VERSION}-linux-x86_64
-	mkdir -p ./bin/
-	mv ./var/protoc-${PROTOC_VERSION}-linux-x86_64/bin/protoc ./bin
-	rm -rf ./var/protoc-${PROTOC_VERSION}-linux-x86_64
+	curl -L https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar -o ${COMPOSER}
+	chmod a+x ${COMPOSER}
+
+.install-dependencies: ## Install PHP project dependencies
+	echo ""
+	echo "==============================================="
+	echo "===== Setting up PHP project dependencies"
+	echo "==============================================="
+	${COMPOSER} install
