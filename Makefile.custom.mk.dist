@@ -2,7 +2,7 @@
 #
 # This file contains the custom commands and/or aliases.
 #
-# To use it, copy/paste this file with the name Makefile.custom and add commands as you wish.
+# To use it, copy/paste this file with the name Makefile.custom.mk and add commands as you wish.
 # This file is in .gitignore, so it will not be committed and is specific to you.
 #
 
@@ -31,4 +31,3 @@ help:
 	@grep '^[^#[:space:]].*:' Makefile.custom.mk | grep -v '^help' | grep -v '^default' | grep -v '^\.' | grep -v '=' | grep -v '^_' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-30s\033[0m %s\n", $$1, $$2}' | sed 's/://'
 
 ########################################################################################################################
-
