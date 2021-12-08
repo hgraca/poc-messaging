@@ -11,6 +11,10 @@ only to one of the languages, should be placed in the corresponding language.
 
 Run `make setup` to prepare all sub-projects.
 
+Run `make run` to run the POC.
+
+Run `make` to see all other available commands.
+
 ## More info
 
 ### Protobuf
