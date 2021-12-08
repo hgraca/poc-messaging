@@ -13,3 +13,5 @@ tags
 
 **/protoc
 var
+Makefile.custom.mk
+Makefile.defaults.custom.mk
