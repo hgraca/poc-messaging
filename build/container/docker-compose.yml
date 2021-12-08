@@ -1,0 +1,108 @@
+version: '3.7'
+
+services:
+
+  php-producer:
+    build:
+      context: ../../php/build/container
+      dockerfile: Dockerfile
+    user: "${DOCKER_USER_ID}"
+    environment:
+      CONTAINER_ROLE: "producer"
+      DATE_TIMEZONE: "Europe/Amsterdam"
+      ###> Xdebug ###
+      PHP_IDE_CONFIG: "serverName=${PROJECT}" # This is needed to debug from CLI (ie. while running tests)
+      XDEBUG_CONFIG: cli_color=1 client_host=${HOST_IP} xdebug.client_port=9003 discover_client_host=false idekey=PHPSTORM log=/var/www/var/xdebug.log log_level=7 mode=develop,debug output_dir=/var/www/var/xdebug profiler_output_name=cachegrind.out.%p
+      ###< Xdebug ###
+    volumes:
+      - ../../php/:/var/www # so we can easily change the application code running in the container
+      - ~/.composer:/.composer # so we can use the host composer cache
+      - ../../php/build/container/php.ini:/usr/local/etc/php/php.ini # so we can easily change php config
+      - ../../php/build/container/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini # Disabling Opcache during development :)
+      - ../../php/build/container/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # so we can easily change xdebug config
+      # Specified because syslink from image is overwritten by above line
+      - ../../var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
+      - ../../var/coverage:/opt/phpstorm-coverage
+      - ../../var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
+    depends_on:
+        - mysql
+    logging:
+        driver: none
+
+  php-consumer:
+    build:
+      context: ../../php/build/container
+      dockerfile: Dockerfile
+    user: "${DOCKER_USER_ID}"
+    environment:
+      CONTAINER_ROLE: "consumer"
+      DATE_TIMEZONE: "Europe/Amsterdam"
+      ###> Xdebug ###
+      PHP_IDE_CONFIG: "serverName=${PROJECT}" # This is needed to debug from CLI (ie. while running tests)
+      XDEBUG_CONFIG: cli_color=1 client_host=${HOST_IP} xdebug.client_port=9003 discover_client_host=false idekey=PHPSTORM log=/var/www/var/xdebug.log log_level=7 mode=develop,debug output_dir=/var/www/var/xdebug profiler_output_name=cachegrind.out.%p
+      ###< Xdebug ###
+    volumes:
+      - ../../php/:/var/www # so we can easily change the application code running in the container
+      - ~/.composer:/.composer # so we can use the host composer cache
+      - ../../php/build/container/php.ini:/usr/local/etc/php/php.ini # so we can easily change php config
+      - ../../php/build/container/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini # Disabling Opcache during development :)
+      - ../../php/build/container/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # so we can easily change xdebug config
+      # Specified because syslink from image is overwritten by above line
+      - ../../var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
+      - ../../var/coverage:/opt/phpstorm-coverage
+      - ../../var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
+    depends_on:
+        - mysql
+    logging:
+        driver: none
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: poc-messaging
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/Amsterdam
+    volumes:
+      - ../../var/mysql:/var/lib/mysql # so that we don't lose our dev/test DBs when we destroy the container
+      - ../../var/mysql-files:/var/lib/mysql-files/
+    command: ['mysqld', '--sql_mode=STRICT_TRANS_TABLES', '--default-time-zone=Europe/Amsterdam', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+  # UI at http://localhost:15672. Use guest as username and password.
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ../../var/rabbitmq/data/:/var/lib/rabbitmq/
+      - ../../var/rabbitmq/log/:/var/log/rabbitmq/
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 22181:2181
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+networks:
+  default:
+    external: # This way the network is always the same, predictable, so we can get the IP it is using, and docker won't create a new adapter each time we run it.
+      name: ${DOCKER_NETWORK}

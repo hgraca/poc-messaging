@@ -44,8 +44,16 @@ setup: ## Prepare all projects to be run
 	echo "==============================================="
 	echo "===== Preparing all projects to be run"
 	echo "==============================================="
+	$(MAKE) .container-create-network
 	$(MAKE) .download-protobuf-compiler
+	$(MAKE) build-containers
 	$(MAKE) -C ./php setup
+
+build-containers: ## Build all containers needed for the project
+	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker-compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} build ${CONTAINERS}
+
+run: ## Start the application and keep it running and showing the logs
+	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker-compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} up ${CONTAINERS}
 
 .download-protobuf-compiler: ## Download Protobuf compiler
 	echo ""
@@ -58,3 +66,11 @@ setup: ## Prepare all projects to be run
 	mkdir -p ./bin/
 	mv ./var/protoc-${PROTOC_VERSION}-linux-x86_64/bin/protoc ./bin
 	rm -rf ./var/protoc-${PROTOC_VERSION}-linux-x86_64
+
+.container-create-network: ## Create the container network to be used by this project container orchestration
+	echo ""
+	echo "==============================================="
+	echo "===== Creating the container network"
+	echo "==============================================="
+	-docker network create ${DOCKER_NETWORK}
+	docker network inspect ${DOCKER_NETWORK} | grep Gateway | awk '{print $$2}' | tr -d '"'

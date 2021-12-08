@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+# Copied from PHP image: first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+    set -- php "$@"
+fi
+
+# Defaults to an producer container role
+role=${CONTAINER_ROLE:-producer}
+
+echo "Container role: $role"
+
+exec php /var/www/bin/entrypoint.php;
