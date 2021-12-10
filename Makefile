@@ -58,6 +58,9 @@ run: ## Start the application and keep it running and showing the logs
 shell-php-producer: ## Open a shell into the php container
 	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker-compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} exec php-producer bash
 
+shell-php-consumer: ## Open a shell into the php container
+	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker-compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} exec php-consumer bash
+
 .download-protobuf-compiler: ## Download Protobuf compiler
 	echo ""
 	echo "==============================================="
