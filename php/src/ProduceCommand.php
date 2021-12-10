@@ -40,7 +40,7 @@ final class ProduceCommand extends Command
         while(true) {
             $msg = "Look! I created a message!\n"
                 . "Source: PHP-producer\n"
-                . "Time: " . (new DateTimeImmutable())->format('Y-m-d H:i:s');
+                . "Time: " . (new DateTimeImmutable())->format('Y-m-d H:i:s') . "\n\n";
 
             echo $msg;
             $this->bus->dispatch(
