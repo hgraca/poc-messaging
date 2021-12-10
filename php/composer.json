@@ -8,15 +8,18 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-rdkafka": "^5",
+        "enqueue/async-event-dispatcher": "^0.10.8",
+        "enqueue/enqueue-bundle": "^0.10.12",
+        "enqueue/rdkafka": "^0.10.14",
         "google/protobuf": "^3.19",
+        "sroze/messenger-enqueue-transport": "^0.5.1",
         "symfony/console": "5.4.*",
         "symfony/dotenv": "5.4.*",
         "symfony/flex": "^1.17|^2",
         "symfony/framework-bundle": "5.4.*",
+        "symfony/messenger": "5.4.*",
         "symfony/runtime": "5.4.*",
         "symfony/yaml": "5.4.*"
-    },
-    "require-dev": {
     },
     "config": {
         "optimize-autoloader": true,
