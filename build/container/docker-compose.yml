@@ -65,9 +65,9 @@ services:
       MYSQL_ROOT_PASSWORD: root
       TZ: Europe/Amsterdam
     volumes:
-      - ../../var/mysql:/var/lib/mysql # so that we don't lose our dev/test DBs when we destroy the container
-      - ../../var/mysql-files:/var/lib/mysql-files/
-    command: ['mysqld', '--sql_mode=STRICT_TRANS_TABLES', '--default-time-zone=Europe/Amsterdam', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+      - ../../var/mysql/:/var/lib/mysql/ # so that we don't lose our dev/test DBs when we destroy the container
+      - ../../var/mysql-files/:/var/lib/mysql-files/
+    command: ['mysqld', '--sql_mode=NO_AUTO_CREATE_USER,STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO', '--explicit_defaults_for_timestamp=1', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   # UI at http://localhost:15672. Use guest as username and password.
   rabbitmq:
@@ -76,9 +76,9 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-    volumes:
-      - ../../var/rabbitmq/data/:/var/lib/rabbitmq/
-      - ../../var/rabbitmq/log/:/var/log/rabbitmq/
+#    volumes:
+#      - ../../var/rabbitmq/data/:/var/lib/rabbitmq/
+#      - ../../var/rabbitmq/log/:/var/log/rabbitmq/
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
