@@ -20,13 +20,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
         jq \
         wget \
         libxml2-dev \
+        librdkafka-dev \
     # Cleanup image
     && apt-get -yqq autoremove \
     && apt-get -yqq clean \
     && rm -rf /var/lib/apt/lists/* /var/cache/* /tmp/* /var/tmp/*
 
 # Install needed php extensions, configure and & enable them
-RUN pecl install -o -f xdebug redis \
+RUN pecl install -o -f xdebug redis rdkafka \
     && rm -rf /tmp/pear \
     && docker-php-ext-enable redis \
     && docker-php-ext-install pdo_mysql zip gd mysqli gettext exif bcmath intl calendar soap pcntl posix \
@@ -39,6 +40,7 @@ RUN pecl install -o -f xdebug redis \
     && chmod +x /usr/local/bin/local-php-security-checker
 
 COPY opcache.ini $PHP_INI_DIR/conf.d/
+COPY rdkafka.ini $PHP_INI_DIR/conf.d/
 COPY php.ini $PHP_INI_DIR
 RUN chown www-data:www-data $PHP_INI_DIR/php.ini
 
