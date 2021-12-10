@@ -24,61 +24,61 @@ services:
       - ../../var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
       - ../../var/coverage:/opt/phpstorm-coverage
       - ../../var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
-    depends_on:
-        - mysql
+#    depends_on:
+#        - mysql
     logging:
         driver: none
 
-  php-consumer:
-    build:
-      context: ../../php/build/container
-      dockerfile: Dockerfile
-    user: "${DOCKER_USER_ID}"
-    environment:
-      CONTAINER_ROLE: "consumer"
-      DATE_TIMEZONE: "Europe/Amsterdam"
-      ###> Xdebug ###
-      PHP_IDE_CONFIG: "serverName=${PROJECT}" # This is needed to debug from CLI (ie. while running tests)
-      XDEBUG_CONFIG: cli_color=1 client_host=${HOST_IP} xdebug.client_port=9003 discover_client_host=false idekey=PHPSTORM log=/var/www/var/xdebug.log log_level=7 mode=develop,debug output_dir=/var/www/var/xdebug profiler_output_name=cachegrind.out.%p
-      ###< Xdebug ###
-    volumes:
-      - ../../php/:/var/www # so we can easily change the application code running in the container
-      - ~/.composer:/.composer # so we can use the host composer cache
-      - ../../php/build/container/php.ini:/usr/local/etc/php/php.ini # so we can easily change php config
-      - ../../php/build/container/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini # Disabling Opcache during development :)
-      - ../../php/build/container/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # so we can easily change xdebug config
-      # Specified because syslink from image is overwritten by above line
-      - ../../var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
-      - ../../var/coverage:/opt/phpstorm-coverage
-      - ../../var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
-    depends_on:
-        - mysql
-    logging:
-        driver: none
+#  php-consumer:
+#    build:
+#      context: ../../php/build/container
+#      dockerfile: Dockerfile
+#    user: "${DOCKER_USER_ID}"
+#    environment:
+#      CONTAINER_ROLE: "consumer"
+#      DATE_TIMEZONE: "Europe/Amsterdam"
+#      ###> Xdebug ###
+#      PHP_IDE_CONFIG: "serverName=${PROJECT}" # This is needed to debug from CLI (ie. while running tests)
+#      XDEBUG_CONFIG: cli_color=1 client_host=${HOST_IP} xdebug.client_port=9003 discover_client_host=false idekey=PHPSTORM log=/var/www/var/xdebug.log log_level=7 mode=develop,debug output_dir=/var/www/var/xdebug profiler_output_name=cachegrind.out.%p
+#      ###< Xdebug ###
+#    volumes:
+#      - ../../php/:/var/www # so we can easily change the application code running in the container
+#      - ~/.composer:/.composer # so we can use the host composer cache
+#      - ../../php/build/container/php.ini:/usr/local/etc/php/php.ini # so we can easily change php config
+#      - ../../php/build/container/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini # Disabling Opcache during development :)
+#      - ../../php/build/container/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # so we can easily change xdebug config
+#      # Specified because syslink from image is overwritten by above line
+#      - ../../var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
+#      - ../../var/coverage:/opt/phpstorm-coverage
+#      - ../../var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
+##    depends_on:
+##        - mysql
+#    logging:
+#        driver: none
 
-  mysql:
-    image: mysql:5.7
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_DATABASE: poc-messaging
-      MYSQL_ROOT_PASSWORD: root
-      TZ: Europe/Amsterdam
-    volumes:
-      - ../../var/mysql/:/var/lib/mysql/ # so that we don't lose our dev/test DBs when we destroy the container
-      - ../../var/mysql-files/:/var/lib/mysql-files/
-    command: ['mysqld', '--sql_mode=NO_AUTO_CREATE_USER,STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO', '--explicit_defaults_for_timestamp=1', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+#  mysql:
+#    image: mysql:5.7
+#    ports:
+#      - 3306:3306
+#    environment:
+#      MYSQL_DATABASE: poc-messaging
+#      MYSQL_ROOT_PASSWORD: root
+#      TZ: Europe/Amsterdam
+#    volumes:
+#      - ../../var/mysql/:/var/lib/mysql/ # so that we don't lose our dev/test DBs when we destroy the container
+#      - ../../var/mysql-files/:/var/lib/mysql-files/
+#    command: ['mysqld', '--sql_mode=NO_AUTO_CREATE_USER,STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO', '--explicit_defaults_for_timestamp=1', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   # UI at http://localhost:15672. Use guest as username and password.
-  rabbitmq:
-    image: rabbitmq:latest
-    container_name: 'rabbitmq'
-    ports:
-      - 5672:5672
-      - 15672:15672
-#    volumes:
-#      - ../../var/rabbitmq/data/:/var/lib/rabbitmq/
-#      - ../../var/rabbitmq/log/:/var/log/rabbitmq/
+#  rabbitmq:
+#    image: rabbitmq:latest
+#    container_name: 'rabbitmq'
+#    ports:
+#      - 5672:5672
+#      - 15672:15672
+##    volumes:
+##      - ../../var/rabbitmq/data/:/var/lib/rabbitmq/
+##      - ../../var/rabbitmq/log/:/var/log/rabbitmq/
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
