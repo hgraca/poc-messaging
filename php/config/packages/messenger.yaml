@@ -16,9 +16,6 @@ framework:
     messenger:
 #        failure_transport: failed
 
-        buses:
-            message.bus:
-
         transports:
             sync: 'sync://'
 
@@ -28,4 +25,4 @@ framework:
 #                dsn: "doctrine://default?queue_name=failed"
 
         routing:
-            'App\AsyncMessageInterface': sync
+            'App\AsyncMessageInterface': async

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-final class Message
+use App\AsyncMessageInterface;
+
+final class Message implements AsyncMessageInterface
 {
     private $content;
 
