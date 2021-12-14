@@ -9,6 +9,7 @@ services:
     user: "${DOCKER_USER_ID}"
     environment:
       CONTAINER_ROLE: "producer"
+      CONTAINER_ENV: "dev" # test|dev
       DATE_TIMEZONE: "Europe/Amsterdam"
       ###> Xdebug ###
       PHP_IDE_CONFIG: "serverName=${PROJECT}" # This is needed to debug from CLI (ie. while running tests)
@@ -36,6 +37,7 @@ services:
     user: "${DOCKER_USER_ID}"
     environment:
       CONTAINER_ROLE: "consumer"
+      CONTAINER_ENV: "dev" # test|dev
       DATE_TIMEZONE: "Europe/Amsterdam"
       ###> Xdebug ###
       PHP_IDE_CONFIG: "serverName=${PROJECT}" # This is needed to debug from CLI (ie. while running tests)
