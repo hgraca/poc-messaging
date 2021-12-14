@@ -21,6 +21,7 @@ framework:
 
             async:
                 dsn:  "%env(MESSENGER_TRANSPORT_DSN)%"
+                serializer: Symfony\Component\Messenger\Transport\Serialization\SerializerInterface
 #            failed:
 #                dsn: "doctrine://default?queue_name=failed"
 

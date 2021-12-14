@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package PocMessaging.Protobuf;
+
+option optimize_for = CODE_SIZE;
+
+message Message {
+  string content = 1;
+}
