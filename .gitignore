@@ -15,3 +15,6 @@ tags
 var
 Makefile.custom.mk
 Makefile.defaults.custom.mk
+
+/dotnet/PocMessaging/PocMessaging/obj
+/dotnet/PocMessaging/PocMessaging/bin
