@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="if exist protoc.exe (&#xD;&#xA;   cd $(SolutionDir)..\idl&#xD;&#xA;   $(ProjectDir)protoc.exe --csharp_out=$(ProjectDir) message.proto&#xD;&#xA;   $(ProjectDir)protoc.exe --csharp_out=$(ProjectDir) duration.proto&#xD;&#xA;) else (&#xD;&#xA;   echo File: error Code: protoc.exe does not exist. Please download and put in project folder&#xD;&#xA;)" />
+  </Target>
+
+</Project>

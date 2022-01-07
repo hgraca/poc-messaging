@@ -19,3 +19,8 @@ Makefile.defaults.custom.mk
 /dotnet/.vs
 /dotnet/**/bin
 /dotnet/**/obj
+/dotnet/**/*.user
+
+/dotnet/PocMessaging.Adapter.ProtocolBufferSerializer/protoc.exe
+/dotnet/PocMessaging.Adapter.ProtocolBufferSerializer/Message.cs
+/dotnet/PocMessaging.Adapter.ProtocolBufferSerializer/Duration.cs
