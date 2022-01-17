@@ -37,6 +37,8 @@ The main repository is [here](https://github.com/protocolbuffers/protobuf).
 
 The documentation is [here](https://github.com/protocolbuffers/protobuf/tree/master/php).
 
+[Protobuf 3 language guide](https://developers.google.com/protocol-buffers/docs/proto3)
+
 #### The compiler can be found here:
 
 Go [here](https://github.com/protocolbuffers/protobuf/releases) and download one of the releases, ie:
