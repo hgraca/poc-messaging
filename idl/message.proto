@@ -6,4 +6,6 @@ option optimize_for = CODE_SIZE;
 
 message Message {
   string content = 1;
+  int32 smallNumber = 2;
+  int64 bigNumber = 3;
 }

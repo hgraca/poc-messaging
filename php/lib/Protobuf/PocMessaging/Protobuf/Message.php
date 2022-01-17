@@ -15,6 +15,14 @@ class Message extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string content = 1;</code>
      */
     protected $content = '';
+    /**
+     * Generated from protobuf field <code>int32 smallNumber = 2;</code>
+     */
+    protected $smallNumber = 0;
+    /**
+     * Generated from protobuf field <code>int64 bigNumber = 3;</code>
+     */
+    protected $bigNumber = 0;
 
     /**
      * Constructor.
@@ -23,6 +31,8 @@ class Message extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $content
+     *     @type int $smallNumber
+     *     @type int|string $bigNumber
      * }
      */
     public function __construct($data = NULL) {
@@ -48,6 +58,50 @@ class Message extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->content = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 smallNumber = 2;</code>
+     * @return int
+     */
+    public function getSmallNumber()
+    {
+        return $this->smallNumber;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 smallNumber = 2;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setSmallNumber($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->smallNumber = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 bigNumber = 3;</code>
+     * @return int|string
+     */
+    public function getBigNumber()
+    {
+        return $this->bigNumber;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 bigNumber = 3;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setBigNumber($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->bigNumber = $var;
 
         return $this;
     }

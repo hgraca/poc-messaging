@@ -16,6 +16,8 @@ final class ProtobufSymfonySerializer implements SymfonySerializerInterface
 
         $protobufMessage = new ProtobufMessage();
         $protobufMessage->setContent($data->getContent());
+        $protobufMessage->setSmallNumber((string) $data->getSmallNumber());
+        $protobufMessage->setBigNumber((string) $data->getBigNumber());
 
         $serializedString = $protobufMessage->serializeToString();
 
@@ -30,11 +32,15 @@ final class ProtobufSymfonySerializer implements SymfonySerializerInterface
         $protobufMessage = new ProtobufMessage();
         $protobufMessage->mergeFromString($data);
 
-        $message = new Message($protobufMessage->getContent());
+        $message = new Message(
+            $protobufMessage->getContent(),
+            (int) $protobufMessage->getSmallNumber(),
+            (int) $protobufMessage->getBigNumber()
+        );
 
-        var_dump($data);
-        var_dump($message);
-        die;
+//        var_dump($data);
+//        var_dump($message);
+//        die;
 
         return $message;
     }

@@ -4,13 +4,13 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.2.5",
+        "php": ">=7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-rdkafka": "^5",
         "enqueue/async-event-dispatcher": "^0.10.8",
         "enqueue/enqueue-bundle": "^0.10.12",
-        "enqueue/rdkafka": "^0.10.14",
+        "enqueue/rdkafka": "dev-bugfix-utf8-encode",
         "google/protobuf": "^3.19",
         "sroze/messenger-enqueue-transport": "^0.5.1",
         "symfony/console": "5.4.*",
@@ -66,5 +66,11 @@
             "allow-contrib": false,
             "require": "5.4.*"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/hgraca/rdkafka"
+        }
+    ]
 }

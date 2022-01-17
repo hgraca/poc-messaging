@@ -10,6 +10,6 @@ final class MessageHandler implements MessageHandlerInterface
 {
     public function __invoke(Message $message)
     {
-        echo $message->getContent();
+        echo $message->getContent() . "\n" . $message->getSmallNumber() . "\n" . $message->getBigNumber() . "\n\n\n";
     }
 }

@@ -16,10 +16,12 @@ class Message
         }
         $pool->internalAddGeneratedFile(
             '
-R
-idl/message.protoPocMessaging.Protobuf"
+z
+idl/message.protoPocMessaging.Protobuf"B
 Message
-content (	BHbproto3'
+content (	
+smallNumber (
+	bigNumber (BHbproto3'
         , true);
 
         static::$is_initialized = true;
