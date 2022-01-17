@@ -59,7 +59,7 @@ composer require "google/protobuf"
 #### Generate the PHP code
 
 ```
-./bin/protoc --php_out=src ./idl/protobuf/duration.proto
+./bin/protoc --php_out=php/lib/Protobuf ./idl/message.proto
 ```
 
 #### Links of interest
