@@ -47,19 +47,23 @@ setup: ## Prepare all projects to be run
 	$(MAKE) .container-create-network
 	$(MAKE) .download-protobuf-compiler
 	$(MAKE) build-containers
-	$(MAKE) -C ./php setup
+	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} run --entrypoint "sh -c 'cd php; make setup'" php-producer
 
 build-containers: ## Build all containers needed for the project
-	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker-compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} build ${CONTAINERS}
+	echo ""
+	echo "==============================================="
+	echo "===== Building all containers needed for the project"
+	echo "==============================================="
+	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} build ${CONTAINERS}
 
 run: ## Start the application and keep it running and showing the logs
-	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker-compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} up ${CONTAINERS}
+	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} up ${CONTAINERS}
 
 shell-php-producer: ## Open a shell into the php container
-	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker-compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} exec php-producer bash
+	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} exec php-producer bash
 
 shell-php-consumer: ## Open a shell into the php container
-	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker-compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} exec php-consumer bash
+	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} exec php-consumer bash
 
 .download-protobuf-compiler: ## Download Protobuf compiler
 	echo ""
