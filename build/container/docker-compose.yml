@@ -118,5 +118,4 @@ services:
 
 networks:
   default:
-    external: # This way the network is always the same, predictable, so we can get the IP it is using, and docker won't create a new adapter each time we run it.
-      name: ${DOCKER_NETWORK}
+    name: ${DOCKER_NETWORK} # This way the network is always the same, predictable, so we can get the IP it is using, and docker won't create a new adapter each time we run it.
