@@ -4,10 +4,10 @@ package PocMessaging.Protobuf;
 
 //option php_namespace = "App\\Service";
 //option php_metadata_namespace = "App\\GPBMetadata";
-option optimize_for = CODE_SIZE;
 
-message Message {
-  string content = 1;
-  int32 smallNumber = 2;
-  int64 bigNumber = 3;
+import "message.proto";
+
+service EchoService {
+    rpc ping (PocMessaging.Protobuf.Message) returns (PocMessaging.Protobuf.Message) {
+    }
 }
