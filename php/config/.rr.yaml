@@ -1,0 +1,28 @@
+grpc:
+  listen: tcp://:50051
+  proto:
+    - "../idl/message.proto"
+    - "../idl/service.proto"
+
+#  If TLS is used it must be used with a certificate signed by a valid CA, otherwise the client will fail to connect.
+#  Hence, TLS is disabled for development purposes. In this case, grpcui needs the flag `-plaintext`
+#  tls:
+#    key:  "../ssl/server.key"
+#    cert: "../ssl/server.crt"
+
+  workers:
+    command: "php ../public/worker.php"
+    pool:
+      numWorkers: 2
+
+metrics:
+  address: localhost:2112
+
+limit:
+  interval: 1
+  services:
+    grpc:
+      maxMemory: 100
+      TTL: 0
+      idleTTL: 0
+      execTTL: 60
