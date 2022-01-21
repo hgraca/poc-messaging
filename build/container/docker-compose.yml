@@ -18,13 +18,14 @@ services:
     volumes:
       - ../../php/:/var/www # so we can easily change the application code running in the container
       - ~/.composer:/.composer # so we can use the host composer cache
+      - ../../php/build/container/grpc.ini:/usr/local/etc/php/conf.d/grpc.ini # so we can easily change grpc config
       - ../../php/build/container/php.ini:/usr/local/etc/php/php.ini # so we can easily change php config
       - ../../php/build/container/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini # Disabling Opcache during development :)
       - ../../php/build/container/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # so we can easily change xdebug config
       # Specified because syslink from image is overwritten by above line
-      - ../../var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
-      - ../../var/coverage:/opt/phpstorm-coverage
-      - ../../var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
+      - ../../php/var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
+      - ../../php/var/coverage:/opt/phpstorm-coverage
+      - ../../php/var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
 #    depends_on:
 #        - mysql
     logging:
@@ -50,13 +51,57 @@ services:
       - ../../php/build/container/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini # Disabling Opcache during development :)
       - ../../php/build/container/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # so we can easily change xdebug config
       # Specified because syslink from image is overwritten by above line
-      - ../../var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
-      - ../../var/coverage:/opt/phpstorm-coverage
-      - ../../var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
+      - ../../php/var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
+      - ../../php/var/coverage:/opt/phpstorm-coverage
+      - ../../php/var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
 #    depends_on:
 #        - mysql
     logging:
         driver: none
+
+  php-grpc-server:
+    build:
+      context: ../../php/build/container
+      dockerfile: Dockerfile
+    user: "${DOCKER_USER_ID}"
+    ports:
+      - "50051:50051"
+    environment:
+      CONTAINER_ROLE: "grpc-server"
+      CONTAINER_ENV: "dev" # test|dev
+      DATE_TIMEZONE: "Europe/Amsterdam"
+      ###> Xdebug ###
+      PHP_IDE_CONFIG: "serverName=${PROJECT}" # This is needed to debug from CLI (ie. while running tests)
+      XDEBUG_CONFIG: cli_color=1 client_host=${HOST_IP} xdebug.client_port=9003 discover_client_host=false idekey=PHPSTORM log=/var/www/var/xdebug.log log_level=7 mode=develop,debug output_dir=/var/www/var/xdebug profiler_output_name=cachegrind.out.%p
+      ###< Xdebug ###
+    volumes:
+      - ../../php/:/var/www # so we can easily change the application code running in the container
+      - ~/.composer:/.composer # so we can use the host composer cache
+      - ../../php/build/container/grpc.ini:/usr/local/etc/php/conf.d/grpc.ini # so we can easily change grpc config
+      - ../../php/build/container/php.ini:/usr/local/etc/php/php.ini # so we can easily change php config
+      - ../../php/build/container/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini # Disabling Opcache during development :)
+      - ../../php/build/container/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # so we can easily change xdebug config
+      # Specified because syslink from image is overwritten by above line
+      - ../../php/var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
+      - ../../php/var/coverage:/opt/phpstorm-coverage
+      - ../../php/var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
+#    depends_on:
+#        - mysql
+    logging:
+        driver: none
+
+  # reach gRPC UI at http://localhost:8091.
+  php-grpc-ui:
+    image: wongnai/grpcui:master
+    container_name: php-grpc-ui
+    ports:
+      - "8091:8080"
+    restart: always
+    volumes:
+      - ../../idl:/idl
+    command: ["grpcui", "-bind", "0.0.0.0", "-port", "8080", "-plaintext", "-import-path", "/idl", "-proto", "service.proto", "php-grpc-server:50051"]
+    depends_on:
+      - php-grpc-server
 
 #  mysql:
 #    image: mysql:5.7

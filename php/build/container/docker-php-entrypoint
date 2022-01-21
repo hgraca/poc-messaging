@@ -11,4 +11,4 @@ role=${CONTAINER_ROLE:-producer}
 
 echo "Container role: $role"
 
-exec php /var/www/bin/entrypoint.php;
+/var/www/bin/entrypoint.sh;

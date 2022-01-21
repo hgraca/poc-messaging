@@ -2,6 +2,9 @@
     "brick/math": {
         "version": "0.9.3"
     },
+    "composer/package-versions-deprecated": {
+        "version": "1.11.99.5"
+    },
     "enqueue/amqp-tools": {
         "version": "0.10.9"
     },
@@ -51,6 +54,12 @@
     "google/protobuf": {
         "version": "v3.19.1"
     },
+    "grpc/grpc": {
+        "version": "1.42.0"
+    },
+    "laminas/laminas-diactoros": {
+        "version": "2.8.0"
+    },
     "psr/cache": {
         "version": "2.0.0"
     },
@@ -59,6 +68,12 @@
     },
     "psr/event-dispatcher": {
         "version": "1.0.0"
+    },
+    "psr/http-factory": {
+        "version": "1.0.1"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
     },
     "psr/log": {
         "version": "2.0.0"
@@ -74,6 +89,15 @@
     },
     "ramsey/uuid": {
         "version": "4.2.3"
+    },
+    "spiral/goridge": {
+        "version": "v2.4.5"
+    },
+    "spiral/php-grpc": {
+        "version": "v1.6.0"
+    },
+    "spiral/roadrunner": {
+        "version": "v1.9.2"
     },
     "sroze/messenger-enqueue-transport": {
         "version": "0.5",

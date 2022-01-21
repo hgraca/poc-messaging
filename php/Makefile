@@ -47,6 +47,15 @@ setup: ## Prepare all projects to be run
 	$(MAKE) .setup-composer
 	$(MAKE) .install-dependencies
 
+serve-grpc:
+	./bin/rr-grpc serve -c ./config/.rr.yaml -v
+
+start-consuming:
+	./bin/console messenger:consume async
+
+start-producing:
+	./bin/console app:messaging:produce
+
 .setup-composer: ## Setting up Composer, PHP's package manager
 	echo ""
 	echo "==============================================="

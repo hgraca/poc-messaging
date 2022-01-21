@@ -16,8 +16,8 @@ final class ProduceCommand extends Command
     public const COMMAND_NAME = 'app:messaging:produce';
     private const COMMAND_DESCRIPTION = 'Sends a message every few seconds.';
     private const SLEEP = 2;
-    private const INT_32_LIMIT = 2147483647; // 214748; //2147483647;
-    private const INT_64_LIMIT = 9223372036854775807; // 283999; // 9223372036854775807;
+    public const INT_32_LIMIT = 2147483647;
+    public const INT_64_LIMIT = 9223372036854775807;
     private const MESSSAGES_LIMIT = 1;
 
     protected ConsoleHelper $consoleHelper;

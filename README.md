@@ -11,6 +11,8 @@ only to one of the languages, should be placed in the corresponding language.
 
 Run `make setup` to prepare all sub-projects.
 
+If you make changes to the IDL files, generate the corresponding code with `make generate-protobuf-code`.
+
 Run `make run` to run the POC.
 
 Run `make` to see all other available commands.
@@ -22,12 +24,11 @@ Run `make` to see all other available commands.
 After starting the POC with `make run`:
 
 1. Open the kafka web UI to see the messages in the MQ at [http://localhost:8080/](http://localhost:8080/)
-2. Login to the producer container and start producing messages:
+2. Open the gRPC web UI to send messages to the gRPC server at [http://localhost:8091/](http://localhost:8091/)
+3. Login to the producer container and start producing messages:
    1. `make shell-php-producer`
-   2. `./bin/console app:messaging:produce`
-3. Login to the consumer and start consuming messages:
-   1. `make shell-php-consumer`
-   2. `./bin/console messenger:consume async`
+   2. `make start-producing` # This will send 3 messages to the MQ, which will be consumed by the consumer applications
+   3. `./bin/grpc_client.php some-message` # This will send 'some-message' to the gRPC server, which will reply with "SOME-MESSAGE ..."
 
 ## More info
 
@@ -48,6 +49,49 @@ protoc-3.19.1-osx-*
 protoc-3.19.1-win*
 ```
 
+Can be downloaded with:
+```shell
+make download-protobuf-compiler
+```
+
+#### Compiler plugin to generate the server code
+
+The plugin `protoc-gen-php-grpc` can be found in the [spiral/php-grpc releases page](https://github.com/spiral/php-grpc/releases).
+This plugin is required to generate a service server code for the application.
+
+Can be downloaded with:
+```shell
+make download-protobuf-compiler-server-plugin
+```
+
+#### Build the compiler and the plugin to generate the service client code
+
+Both the protobuf compiler and its plugins are part of the repository, 
+nevertheless if we need to generate them again, here is the recipe. 
+
+In the case of PHP, and probably other languages, the compiler needs a plugin which is not available for download, 
+therefore we need to build it ourselves from the grpc repo, using bazel.
+
+```shell
+# Setup Bazel
+# https://docs.bazel.build/versions/main/install-ubuntu.html#install-with-installer-ubuntu
+BAZEL_VERSION='5.0.0'
+curl -L https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh -o ./var/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
+./var/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh --user
+export PATH="$PATH:$HOME/bin"
+#apt install -y g++ unzip zip # might or might not be needed/desired
+
+# Generate the protoc compiler and plugin
+git clone --recurse-submodules git@github.com:grpc/grpc.git ./var/grpc
+cd ./var/grpc
+CC=/usr/bin/gcc bazel build @com_google_protobuf//:protoc //src/compiler:all
+cd ../../
+
+# Put the compiler and plugin in the main repo bin folder
+cp bazel-bin/external/com_google_protobuf/protoc ./php/bin
+cp bazel-bin/src/compiler/grpc_php_plugin ./php/bin
+```
+
 ### PHP
 
 #### Install the PHP libraries
@@ -58,8 +102,8 @@ composer require "google/protobuf"
 
 #### Generate the PHP code
 
-```
-./bin/protoc --php_out=php/lib/Protobuf ./idl/message.proto
+```shell
+make generate-protobuf-code
 ```
 
 #### Links of interest
