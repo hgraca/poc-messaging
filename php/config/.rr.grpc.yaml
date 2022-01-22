@@ -1,5 +1,5 @@
 grpc:
-  listen: tcp://:50051
+  listen: tcp://0.0.0.0:50051
   proto:
     - "../idl/message.proto"
     - "../idl/service.proto"
@@ -11,7 +11,7 @@ grpc:
 #    cert: "../ssl/server.crt"
 
   workers:
-    command: "php ../public/worker.php"
+    command: "php ../public/index.grpc.php"
     pool:
       numWorkers: 2
 

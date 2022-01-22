@@ -9,3 +9,4 @@ HOST_USER_ID=`id -u` # This works for linux. If it doesnt work on your OS, creat
 PROJECT='poc-messaging'
 PROTOC_VERSION='3.19.1'
 PROTOC_PHP_VERSION='1.6.0'
+ROADRUNNER_GRPC_VERSION='2.7.4'

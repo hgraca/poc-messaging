@@ -29,7 +29,7 @@ services:
 #    depends_on:
 #        - mysql
     logging:
-        driver: none
+      driver: none
 
   php-consumer:
     build:
@@ -57,7 +57,7 @@ services:
 #    depends_on:
 #        - mysql
     logging:
-        driver: none
+      driver: none
 
   php-grpc-server:
     build:
@@ -88,7 +88,7 @@ services:
 #    depends_on:
 #        - mysql
     logging:
-        driver: none
+      driver: none
 
   # reach gRPC UI at http://localhost:8091.
   php-grpc-ui:

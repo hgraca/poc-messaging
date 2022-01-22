@@ -101,11 +101,11 @@ download-rr-grpc: ## Download and install RoadRunner-GRPC
 	echo "===== Downloading and installing RoadRunner-GRPC"
 	echo "==============================================="
 	mkdir -p ./var/
-	curl -L https://github.com/spiral/php-grpc/releases/download/v${PROTOC_PHP_VERSION}/rr-grpc-${PROTOC_PHP_VERSION}-linux-amd64.tar.gz -o ./var/rr-grpc-${PROTOC_PHP_VERSION}-linux-amd64.tar.gz
-	unzip ./var/rr-grpc-${PROTOC_PHP_VERSION}-linux-amd64.tar.gz -d ./var/rr-grpc-${PROTOC_PHP_VERSION}-linux-amd64
+	curl -L https://github.com/spiral/php-grpc/releases/download/v${ROADRUNNER_GRPC_VERSION}/rr-grpc-${ROADRUNNER_GRPC_VERSION}-linux-amd64.tar.gz -o ./var/rr-grpc-${ROADRUNNER_GRPC_VERSION}-linux-amd64.tar.gz
+	unzip ./var/rr-grpc-${ROADRUNNER_GRPC_VERSION}-linux-amd64.tar.gz -d ./var/rr-grpc-${ROADRUNNER_GRPC_VERSION}-linux-amd64
 	mkdir -p ./bin/
-	mv ./var/rr-grpc-${PROTOC_PHP_VERSION}-linux-amd64/rr-grpc ./php/bin
-	rm -rf ./var/rr-grpc-${PROTOC_PHP_VERSION}-linux-amd64
+	mv ./var/rr-grpc-${ROADRUNNER_GRPC_VERSION}-linux-amd64/rr-grpc ./php/bin
+	rm -rf ./var/rr-grpc-${ROADRUNNER_GRPC_VERSION}-linux-amd64
 
 generate-protobuf-code:
 	echo "Generating PHP server services interfaces..."

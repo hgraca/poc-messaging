@@ -48,7 +48,7 @@ setup: ## Prepare all projects to be run
 	$(MAKE) .install-dependencies
 
 serve-grpc:
-	./bin/rr-grpc serve -c ./config/.rr.yaml -v
+	./bin/rr-grpc serve -c ./config/.rr.grpc.yaml -v
 
 start-consuming:
 	./bin/console messenger:consume async
