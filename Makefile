@@ -107,6 +107,18 @@ download-rr-grpc: ## Download and install RoadRunner-GRPC
 	mv ./var/rr-grpc-${ROADRUNNER_GRPC_VERSION}-linux-amd64/rr-grpc ./php/bin
 	rm -rf ./var/rr-grpc-${ROADRUNNER_GRPC_VERSION}-linux-amd64
 
+download-rr: ## Download and install RoadRunner
+	echo ""
+	echo "==============================================="
+	echo "===== Downloading and installing RoadRunner"
+	echo "==============================================="
+	mkdir -p ./var/
+	curl -L https://github.com/roadrunner-server/roadrunner/releases/download/v${ROADRUNNER_VERSION}/roadrunner-${ROADRUNNER_VERSION}-linux-amd64.tar.gz -o ./var/roadrunner-${ROADRUNNER_VERSION}-linux-amd64.tar.gz
+	unzip ./var/roadrunner-${ROADRUNNER_VERSION}-linux-amd64.tar.gz -d ./var/roadrunner-${ROADRUNNER_VERSION}-linux-amd64
+	mkdir -p ./bin/
+	mv ./var/roadrunner-${ROADRUNNER_VERSION}-linux-amd64/rr ./php/bin
+	rm -rf ./var/roadrunner-${ROADRUNNER_VERSION}-linux-amd64
+
 generate-protobuf-code:
 	echo "Generating PHP server services interfaces..."
 	./bin/protoc --proto_path=./idl \

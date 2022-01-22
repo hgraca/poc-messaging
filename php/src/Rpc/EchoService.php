@@ -4,7 +4,7 @@ namespace App\Rpc;
 
 use PocMessaging\Protobuf\EchoServiceInterface;
 use PocMessaging\Protobuf\Message;
-use Spiral\GRPC\ContextInterface;
+use Spiral\RoadRunner\GRPC\ContextInterface;
 
 class EchoService implements EchoServiceInterface
 {

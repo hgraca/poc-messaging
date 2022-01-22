@@ -39,6 +39,8 @@ RUN pecl install -o -f xdebug redis rdkafka-5.0.2 protobuf-3.19.3 grpc-1.43.0 \
     && curl --location --silent --show-error --output /usr/local/bin/local-php-security-checker https://github.com/fabpot/local-php-security-checker/releases/download/v1.0.0/local-php-security-checker_1.0.0_linux_amd64 \
     && chmod +x /usr/local/bin/local-php-security-checker
 
+RUN docker-php-ext-install sockets
+
 COPY opcache.ini $PHP_INI_DIR/conf.d/
 COPY rdkafka.ini $PHP_INI_DIR/conf.d/
 COPY grpc.ini $PHP_INI_DIR/conf.d/

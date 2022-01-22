@@ -4,19 +4,21 @@
 
 namespace PocMessaging\Protobuf;
 
-use Spiral\GRPC;
+use Spiral\RoadRunner\GRPC\ContextInterface;
+use Spiral\RoadRunner\GRPC\Exception\InvokeException;
+use Spiral\RoadRunner\GRPC\ServiceInterface;
 
-interface EchoServiceInterface extends GRPC\ServiceInterface
+interface EchoServiceInterface extends ServiceInterface
 {
     // GRPC specific service name.
     public const NAME = "PocMessaging.Protobuf.EchoService";
 
     /**
-    * @param GRPC\ContextInterface $ctx
+    * @param ContextInterface $ctx
     * @param Message $in
     * @return Message
     *
-    * @throws GRPC\Exception\InvokeException
+    * @throws InvokeException
     */
-    public function ping(GRPC\ContextInterface $ctx, Message $in): Message;
+    public function ping(ContextInterface $ctx, Message $in): Message;
 }

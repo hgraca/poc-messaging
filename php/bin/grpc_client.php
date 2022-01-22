@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -29,7 +30,7 @@ function grpc_echo($hostname, $textMessage)
 
     /** @var ProtobufMessage $response */
     /** @var stdClass $status {metadata: array, code: int, details: string}*/
-    list($response, $status) = $client->ping($protobufMessage)->wait();
+    [$response, $status] = $client->ping($protobufMessage)->wait();
     if ($status->code !== Grpc\STATUS_OK) {
         echo "ERROR: " . $status->code . ", " . $status->details . PHP_EOL;
         exit(1);

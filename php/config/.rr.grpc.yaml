@@ -1,28 +1,26 @@
+rpc:
+  listen: "tcp://127.0.0.1:6001"
+
+server:
+  command: "php ../public/index.grpc.php"
+  relay: "pipes"
+  relay_timeout: "20s"
+
 grpc:
-  listen: tcp://0.0.0.0:50051
+  listen: "tcp://0.0.0.0:50051"
   proto:
     - "../idl/message.proto"
     - "../idl/service.proto"
-
-#  If TLS is used it must be used with a certificate signed by a valid CA, otherwise the client will fail to connect.
-#  Hence, TLS is disabled for development purposes. In this case, grpcui needs the flag `-plaintext`
-#  tls:
-#    key:  "../ssl/server.key"
-#    cert: "../ssl/server.crt"
-
-  workers:
-    command: "php ../public/index.grpc.php"
-    pool:
-      numWorkers: 2
-
-metrics:
-  address: localhost:2112
-
-limit:
-  interval: 1
-  services:
-    grpc:
-      maxMemory: 100
-      TTL: 0
-      idleTTL: 0
-      execTTL: 60
+  max_send_msg_size: 50
+  max_recv_msg_size: 50
+  max_connection_idle: 0s
+  max_connection_age: 0s
+  max_connection_age_grace: 0s
+  max_concurrent_streams: 10
+  ping_time: 1s
+  timeout: 200s
+  pool:
+    num_workers: 2
+    max_jobs: 0
+    allocate_timeout: 60s
+    destroy_timeout: 60
