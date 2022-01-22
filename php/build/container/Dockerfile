@@ -42,6 +42,7 @@ RUN pecl install -o -f xdebug redis rdkafka-5.0.2 protobuf-3.19.3 grpc-1.43.0 \
 COPY opcache.ini $PHP_INI_DIR/conf.d/
 COPY rdkafka.ini $PHP_INI_DIR/conf.d/
 COPY grpc.ini $PHP_INI_DIR/conf.d/
+COPY protobuf.ini $PHP_INI_DIR/conf.d/
 COPY php.ini $PHP_INI_DIR
 RUN chown www-data:www-data $PHP_INI_DIR/php.ini
 
