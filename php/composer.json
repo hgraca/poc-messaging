@@ -15,6 +15,7 @@
         "enqueue/rdkafka": "dev-bugfix-utf8-encode",
         "google/protobuf": "^3.19",
         "grpc/grpc": "^1.42",
+        "runtime/roadrunner-symfony-nyholm": "^0.2.0",
         "spiral/roadrunner-grpc": "^2.0",
         "sroze/messenger-enqueue-transport": "^0.5.1",
         "symfony/console": "5.4.*",

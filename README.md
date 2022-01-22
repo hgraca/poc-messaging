@@ -25,6 +25,7 @@ After starting the POC with `make run`:
 
 1. Open the kafka web UI to see the messages in the MQ at [http://localhost:8080/](http://localhost:8080/)
 2. Open the gRPC web UI to send messages to the gRPC server at [http://localhost:8091/](http://localhost:8091/)
+2. The HTTP server will be available at [http://localhost:9090/echoo](http://localhost:9090/echoo). You can post some text to it.
 3. Login to the producer container and start producing messages:
    1. `make shell-php-producer`
    2. `make start-producing` # This will send 3 messages to the MQ, which will be consumed by the consumer applications
@@ -125,3 +126,5 @@ make generate-protobuf-code
 
 [UI for Apache Kafka – Free Web UI for Apache Kafka](https://github.com/provectus/kafka-ui)
 [UI for Apache Kafka – Free Web UI for Apache Kafka: ENV variables](https://github.com/provectus/kafka-ui/blob/master/README.md#env_variables)
+
+[RoadRunner gRPC](https://github.com/spiral/roadrunner-grpc)

@@ -50,6 +50,9 @@ setup: ## Prepare all projects to be run
 serve-grpc:
 	./bin/rr serve -c ./config/.rr.grpc.yaml
 
+serve-http:
+	./bin/rr serve -c ./config/.rr.http.yaml
+
 start-consuming:
 	./bin/console messenger:consume async
 

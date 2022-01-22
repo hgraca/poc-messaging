@@ -1,0 +1,15 @@
+rpc:
+  listen: "tcp://127.0.0.1:6001"
+
+server:
+  command: "php ../public/index.http.php"
+  relay: "pipes"
+  relay_timeout: "20s"
+  env:
+    APP_RUNTIME: Runtime\RoadRunnerSymfonyNyholm\Runtime
+
+http:
+  address: "0.0.0.0:9090"
+  # Workers pool settings.
+  pool:
+    num_workers: 2

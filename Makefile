@@ -58,7 +58,9 @@ build-containers: ## Build all containers needed for the project
 run: ## Start the application and keep it running and showing the logs
 	cp -rf idl php/idl
 	echo
-	echo "ATTENTION: The PHP gRPC web UI will be available at http://localhost:8091/ if at all, NOT at http://0.0.0.0:8080/ despite what it reports back."
+	echo "ATTENTION:"
+	echo "           The PHP gRPC web UI will be available at http://localhost:8091/ if at all, NOT at http://0.0.0.0:8080/ despite what it reports back."
+	echo "           The PHP HTTP server will be available at http://localhost:9090/echoo."
 	echo
 	DOCKER_USER_ID=${HOST_USER_ID} DOCKER_NETWORK=${DOCKER_NETWORK} HOST_IP=${HOST_IP} PROJECT=${PROJECT} docker compose -f ./build/container/docker-compose.yml ${DOCKER_COMPOSE_ARGUMENTS} up ${CONTAINERS}
 

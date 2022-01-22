@@ -91,6 +91,37 @@ services:
     logging:
       driver: none
 
+  php-http-server:
+    build:
+      context: ../../php/build/container
+      dockerfile: Dockerfile
+    user: "${DOCKER_USER_ID}"
+    ports:
+      - "9090:9090"
+    environment:
+      CONTAINER_ROLE: "http-server"
+      CONTAINER_ENV: "dev" # test|dev
+      DATE_TIMEZONE: "Europe/Amsterdam"
+      ###> Xdebug ###
+      PHP_IDE_CONFIG: "serverName=${PROJECT}" # This is needed to debug from CLI (ie. while running tests)
+      XDEBUG_CONFIG: cli_color=1 client_host=${HOST_IP} xdebug.client_port=9003 discover_client_host=false idekey=PHPSTORM log=/var/www/var/xdebug.log log_level=7 mode=develop,debug output_dir=/var/www/var/xdebug profiler_output_name=cachegrind.out.%p
+      ###< Xdebug ###
+    volumes:
+      - ../../php/:/var/www # so we can easily change the application code running in the container
+      - ~/.composer:/.composer # so we can use the host composer cache
+      - ../../php/build/container/php.ini:/usr/local/etc/php/php.ini # so we can easily change php config
+      - ../../php/build/container/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini # Disabling Opcache during development :)
+      - ../../php/build/container/protobuf.ini:/usr/local/etc/php/conf.d/protobuf.ini # so we can easily change protobuf config
+      - ../../php/build/container/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # so we can easily change xdebug config
+      # Specified because syslink from image is overwritten by above line
+      - ../../php/var/tmp:/tmp # legacy session files are stored in /tmp, this way we can access them and reuse them between container rebuilds
+      - ../../php/var/coverage:/opt/phpstorm-coverage
+      - ../../php/var/mysql-files:/var/lib/mysql-files/ # So that we can create tests that create files with mysql and are deleted by php
+#    depends_on:
+#        - mysql
+    logging:
+      driver: none
+
   # reach gRPC UI at http://localhost:8091.
   php-grpc-ui:
     image: wongnai/grpcui:master
