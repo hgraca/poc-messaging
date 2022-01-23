@@ -30,3 +30,8 @@ services:
         class: App\Serializer\ProtobufTransportSerializer
         arguments:
             - '@App\Serializer\ProtobufSymfonySerializer'
+
+    PocMessaging\Protobuf\EchoServiceInterface:
+        class: App\Rpc\EchoService
+        public: true
+        lazy: true # being lazy prevents all gRPC services from being instantiated before needing to

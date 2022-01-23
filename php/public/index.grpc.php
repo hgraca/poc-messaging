@@ -1,6 +1,6 @@
 <?php
 
-use App\Rpc\EchoService;
+use App\Kernel;
 use PocMessaging\Protobuf\EchoServiceInterface;
 use Spiral\RoadRunner\GRPC\Server;
 use Spiral\RoadRunner\Worker;
@@ -11,6 +11,13 @@ $server = new Server(null, [
     'debug' => false, // optional (default: false)
 ]);
 
-$server->registerService(EchoServiceInterface::class, new EchoService());
+$symfonyKernel = new Kernel('dev', false);
+$symfonyKernel->boot();
+
+$serviceId = EchoServiceInterface::class;
+$server->registerService(
+    $serviceId,
+    $symfonyKernel->getContainer()->get($serviceId)
+);
 
 $server->serve(Worker::create());

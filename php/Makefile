@@ -48,6 +48,8 @@ setup: ## Prepare all projects to be run
 	$(MAKE) .install-dependencies
 
 serve-grpc:
+	rm -fr ./var/cache/*
+	./bin/console cache:clear
 	./bin/rr serve -c ./config/.rr.grpc.yaml
 
 serve-http:
