@@ -12,6 +12,8 @@ class EchoService implements EchoServiceInterface
     {
         $out = new Message();
         $out->setContent(strtoupper($in->getContent() . ' from the PHP gRPC server.'));
+        $out->setSmallNumber($in->getSmallNumber() + 100);
+        $out->setBigNumber($in->getBigNumber() + 100);
 
         return $out;
     }
